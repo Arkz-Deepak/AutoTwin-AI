@@ -1,0 +1,54 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Large CAD & 3D Model Binaries (>50MB exceeding GitHub limits)
+*.stp
+*.step
+*.stl
+*.obj
+cad_model/
+
+# Synthetic Dataset & Rendered Images (Do not track images)
+*.png
+*.jpg
+*.jpeg
+*.bmp
+*.tiff
+*.webp
+*.exr
+
+# Blender Autosave & Backups
+*.blend
+*.blend1
+*.blend2
+*.blend@
+
+# Python Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDE & OS specific files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Model checkpoints & heavy weights
+*.pth
+*.pt
+*.onnx
+*.h5
+*.tflite
+*.ckpt
+
+# Temporary & logs
+*.log
+scratch/
+tmp/
+temp/
+bench_output/
