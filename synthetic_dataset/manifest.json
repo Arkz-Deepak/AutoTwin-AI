@@ -1,0 +1,44 @@
+[
+  {
+    "filename": "view_01_front.png",
+    "name": "front",
+    "azimuth_deg": 90,
+    "elevation_deg": 0,
+    "distance": 3.5
+  },
+  {
+    "filename": "view_02_top.png",
+    "name": "top",
+    "azimuth_deg": 0,
+    "elevation_deg": 90,
+    "distance": 3.5
+  },
+  {
+    "filename": "view_03_side.png",
+    "name": "side",
+    "azimuth_deg": 0,
+    "elevation_deg": 0,
+    "distance": 3.5
+  },
+  {
+    "filename": "view_04_isometric_1.png",
+    "name": "isometric_1",
+    "azimuth_deg": 45,
+    "elevation_deg": 25,
+    "distance": 3.5
+  },
+  {
+    "filename": "view_05_isometric_2.png",
+    "name": "isometric_2",
+    "azimuth_deg": 135,
+    "elevation_deg": 20,
+    "distance": 3.5
+  },
+  {
+    "filename": "view_06_isometric_3.png",
+    "name": "isometric_3",
+    "azimuth_deg": 225,
+    "elevation_deg": 15,
+    "distance": 3.5
+  }
+]

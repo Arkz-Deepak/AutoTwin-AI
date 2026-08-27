@@ -1,0 +1,148 @@
+{
+  "primary_selected_joint": {
+    "name": "Front Left Suspension & Cross-Member Joint",
+    "coordinates": [
+      -1.48,
+      -0.303,
+      -0.095
+    ],
+    "local_vertex_count": 29947,
+    "description": "Intersection of front tubular cross-member, upper/lower A-arm suspension bracket, and main longitudinal rail."
+  },
+  "all_available_structural_joints": {
+    "front_suspension_left_joint": {
+      "title": "Front Left Suspension & Cross-Member Joint (Primary Recommendation)",
+      "coord": [
+        -1.48,
+        -0.303,
+        -0.095
+      ],
+      "desc": "Intersection of front tubular cross-member, upper/lower A-arm suspension bracket, and main longitudinal rail."
+    },
+    "engine_transmission_mount_joint": {
+      "title": "Engine / Transmission Cross-Member Bracket Joint",
+      "coord": [
+        -1.104,
+        0.304,
+        -0.117
+      ],
+      "desc": "Heavy-duty gusseted mounting junction on the right frame rail with complex structural stiffeners."
+    },
+    "rear_suspension_perch_joint": {
+      "title": "Rear Suspension Spring Perch & Rail Joint",
+      "coord": [
+        0.68,
+        -0.457,
+        -0.027
+      ],
+      "desc": "Rear axle kick-up structural joint with spring perch tower and shock absorber mount."
+    },
+    "rear_crossmember_hitch_joint": {
+      "title": "Rear Cross-Member / Tow Hitch Flange Joint",
+      "coord": [
+        1.71,
+        0.409,
+        0.014
+      ],
+      "desc": "Rearmost structural cross-member junction with reinforced hitch mounting plates."
+    }
+  },
+  "views": [
+    {
+      "view_id": "01_full_top_view_true_joint",
+      "filename": "01_full_top_view_true_joint.png",
+      "camera_type": "ORTHO",
+      "location": [
+        0.0,
+        0.0,
+        12.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "description": "Full chassis top-down overview showing the true front-left structural joint located on the frame rail."
+    },
+    {
+      "view_id": "02_full_isometric_true_joint",
+      "filename": "02_full_isometric_true_joint.png",
+      "camera_type": "PERSP",
+      "location": [
+        3.2,
+        -4.5,
+        3.2
+      ],
+      "rotation": [
+        1.0122909661567112,
+        0.0,
+        0.6108652381980153
+      ],
+      "description": "Full 3D isometric view with the glowing red marker on the actual structural suspension joint."
+    },
+    {
+      "view_id": "03_zoomed_true_joint_top_crop",
+      "filename": "03_zoomed_true_joint_top_crop.png",
+      "camera_type": "ORTHO",
+      "location": [
+        -1.48,
+        -0.303,
+        10.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "description": "Close-up 1:1 top view showing the rich intersection of cross-tubes, rail walls, gusset plates, and brackets."
+    },
+    {
+      "view_id": "04_zoomed_true_joint_isometric_detail",
+      "filename": "04_zoomed_true_joint_isometric_detail.png",
+      "camera_type": "PERSP",
+      "location": [
+        -0.83,
+        -1.053,
+        0.45500000000000007
+      ],
+      "rotation": [
+        1.0471975511965976,
+        0.0,
+        0.7330382858376184
+      ],
+      "description": "Feature-rich 3D perspective macro detail showing complex geometric contours for AI/CV model training."
+    },
+    {
+      "view_id": "05_engine_mount_joint_detail",
+      "filename": "05_engine_mount_joint_detail.png",
+      "camera_type": "PERSP",
+      "location": [
+        -0.45400000000000007,
+        1.054,
+        0.43300000000000005
+      ],
+      "rotation": [
+        1.0471975511965976,
+        0.0,
+        2.4085543677521746
+      ],
+      "description": "Engine/transmission crossmember structural joint showing bracket flanges and reinforcement webs."
+    },
+    {
+      "view_id": "06_rear_suspension_joint_detail",
+      "filename": "06_rear_suspension_joint_detail.png",
+      "camera_type": "PERSP",
+      "location": [
+        1.33,
+        -1.207,
+        0.523
+      ],
+      "rotation": [
+        1.0471975511965976,
+        0.0,
+        0.7330382858376184
+      ],
+      "description": "Rear axle suspension perch tower joint showing tubular framing and mounting ears."
+    }
+  ]
+}
