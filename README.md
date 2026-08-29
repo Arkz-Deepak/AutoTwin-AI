@@ -1,4 +1,4 @@
-# 🚗 Automotive Chassis Digital Twin & Structural Anomaly Detection
+# 🚗 AutoTwin-AI: Automotive Chassis Digital Twin & Structural Anomaly Detection
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![PyTorch 2.x](https://img.shields.io/badge/PyTorch-2.x%20CUDA-orange.svg)](https://pytorch.org/)
@@ -6,7 +6,36 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-green.svg)](https://fastapi.tiangolo.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-An end-to-end **AI-Powered Digital Twin & Visual Inspection Platform** for vehicle structural ladder-frame chassis assemblies. The system combines high-throughput GPU synthetic data generation in Blender, physics-informed domain randomization, and deep convolutional autoencoders to detect microscopic manufacturing defects, weld flaws, and structural misalignments.
+An end-to-end **AI-Powered Digital Twin & Visual Inspection Platform** for vehicle structural ladder-frame chassis assemblies. The system combines high-throughput GPU synthetic data generation in Blender Cycles, physics-informed domain randomization, and deep convolutional autoencoders to detect microscopic manufacturing defects, weld flaws, and structural anomalies in real time.
+
+---
+
+## 📸 Visual Showcase & Inspection Suite
+
+### 1. AI Structural Joint Anomaly Detection & Reconstruction Heatmap
+The trained **PyTorch Convolutional Autoencoder** reconstructs baseline nominal joints and flags physical anomalies via high-intensity residual error heatmaps ($|I - \hat{I}|$):
+
+![Autoencoder Reconstruction & Anomaly Heatmap](docs/assets/reconstruction_analysis.png)
+
+---
+
+### 2. True Structural CAD Joint Mapping
+High-density 3D spatial voxel clustering isolates the **Front-Left Suspension & Cross-Member Joint** (`[-1.480, -0.303, -0.095]`, 29,947 vertices) from 361k CAD vertices:
+
+| Top-Down Orthographic Chassis Overview | 3D Isometric CAD Perspective |
+| :---: | :---: |
+| ![Chassis Top View](docs/assets/01_full_top_view_true_joint.png) | ![Isometric Overview](docs/assets/02_full_isometric_true_joint.png) |
+
+| Macro Top-Down Joint Crop (1:1 Sensor Framing) | High-Resolution Macro Perspective Detail |
+| :---: | :---: |
+| ![Macro Top Crop](docs/assets/03_zoomed_true_joint_top_crop.png) | ![Macro Perspective](docs/assets/04_zoomed_true_joint_isometric_detail.png) |
+
+---
+
+### 3. Synthetic Defect Injection (Weld Slag & Spatter)
+Mathematical defect generator spawning irregular, distorted oxidic slag geometry directly onto the suspension weld seam for out-of-distribution anomaly validation:
+
+![Injected Structural Defect - Weld Slag](docs/assets/defective_test.png)
 
 ---
 
@@ -49,20 +78,16 @@ flowchart TD
 
 ---
 
-## ⚡ Key Features
+## ⚡ Key Capabilities
 
-- **Blender Cycles OptiX Acceleration**:
+- **Blender Cycles OptiX GPU Acceleration**:
   - Accelerated via NVIDIA RTX GPU with hardware AI neural denoising.
   - Generates photorealistic `1024x1024` frames in **~0.60s – 0.80s** (~80x speedup over CPU).
   - In-memory persistent datablocks avoiding `bpy.ops` operator garbage collection bottlenecks.
-- **True Structural CAD Joint Mapping**:
-  - Analyzes 361,174 CAD vertices via 3D spatial voxel clustering to target critical structural junctions (suspension brackets, crossmembers, hitch plates).
 - **Physics-Informed Domain Randomization**:
   - Multi-axis sun angle variance (Azimuth $0^\circ-360^\circ$, Pitch $25^\circ-70^\circ$, Roll $\pm 20^\circ$).
   - Dynamic factory lighting intensity shifts (`3.0` to `8.5` energy).
   - Sub-millimeter sensor mounting vibration and focal jitter ($\pm 0.03$ X/Y, $\pm 0.05$ Z, $\pm 3.5^\circ$ roll).
-- **Mathematical Defect & Slag Injection**:
-  - Spawns irregular, distorted 3D oxidic slag/spatter geometry directly on weld seams for out-of-distribution anomaly testing.
 - **Deep Convolutional Autoencoder (CAE)**:
   - 4-stage convolutional downsampling with batch normalization and LeakyReLU activations.
   - Generates pixel-accurate reconstruction difference heatmaps ($|\text{Input} - \text{Reconstruction}|$) to pinpoint localized structural defects.
@@ -84,32 +109,41 @@ flowchart TD
 ## 📂 Project Directory Structure
 
 ```
-C:\Projects\DigitalTwin\
-├── .gitignore                                # Prevents tracking large binary renders & weights
-├── README.md                                 # Project documentation
+AutoTwin-AI/
+├── .gitignore                                # Ignores large raw renders & CAD binaries
+├── README.md                                 # Project documentation & visual gallery
 ├── requirements.txt                          # Python dependencies
 │
-├── cad_model/                                # Raw CAD assets
-│   ├── 28000.obj                             # 3D Vehicle chassis OBJ mesh
-│   ├── 28000.stl                             # STL surface model
-│   └── ladder-frame-chassis...snapshot.1/    # STEP source files & reference images
+├── src/                                      # Core pipeline modules & algorithms
+│   ├── __init__.py
+│   ├── data_gen.py                           # Multi-joint synthetic dataset generator
+│   ├── generate_autoencoder_dataset.py       # 5,000-sample domain-randomized baseline generator
+│   ├── data_gen_anomalous.py                 # Synthetic structural defect & weld slag injector
+│   ├── train_autoencoder_pytorch.py          # PyTorch Autoencoder training & heatmap visualizer
+│   ├── data.py                               # Dataset verification & corrupted file cleaner
+│   ├── generate_synthetic_data.py            # Multi-view reference renderer
+│   └── debug_blender.py                      # Blender environment diagnostics
 │
-├── data_gen.py                               # Core multi-joint synthetic dataset generator
-├── generate_autoencoder_dataset.py           # 5,000-sample domain-randomized Autoencoder generator
-├── data_gen_anomalous.py                     # Synthetic structural defect & weld slag injector
-├── train_autoencoder_pytorch.py              # PyTorch Convolutional Autoencoder training & heatmap visualizer
-├── data.py                                   # Dataset verification & corrupted file cleaner
+├── docs/                                     # Documentation assets & showcase images
+│   └── assets/
+│       ├── 01_full_top_view_true_joint.png
+│       ├── 02_full_isometric_true_joint.png
+│       ├── 03_zoomed_true_joint_top_crop.png
+│       ├── 04_zoomed_true_joint_isometric_detail.png
+│       ├── defective_test.png
+│       └── reconstruction_analysis.png
 │
-├── joint_inspection/                         # Multi-angle HD inspection renders & coordinate metadata
-│   ├── 01_full_top_view_true_joint.png
-│   ├── 02_full_isometric_true_joint.png
-│   ├── 03_zoomed_true_joint_top_crop.png
-│   ├── 04_zoomed_true_joint_isometric_detail.png
-│   └── joint_info.json                       # Exact camera and coordinate manifest
+├── cad_model/                                # Raw CAD assets (361k vertex chassis)
+│   ├── 28000.obj
+│   ├── 28000.stl
+│   └── ladder-frame-chassis...snapshot.1/
+│
+├── joint_inspection/                         # Structural joint inspection metadata
+│   └── joint_info.json                       # 3D spatial coordinates & cluster properties
 │
 ├── models/                                   # Trained neural network artifacts
 │   ├── autoencoder_best.pth                  # Best model checkpoint (PyTorch weights)
-│   └── reconstruction_analysis.png           # 3-panel reconstruction & error heatmap evaluation
+│   └── reconstruction_analysis.png
 │
 └── synthetic_dataset/
     ├── autoencoder_baseline/                 # 4,800+ domain-randomized normal baseline frames
@@ -125,8 +159,8 @@ C:\Projects\DigitalTwin\
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/DigitalTwin.git
-cd DigitalTwin
+git clone https://github.com/Arkz-Deepak/AutoTwin-AI.git
+cd AutoTwin-AI
 
 # Install Python dependencies (PyTorch with CUDA 12.x support)
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124
@@ -141,17 +175,17 @@ pip install -r requirements.txt
 ```powershell
 # Windows
 $env:NUM_IMAGES="5000"
-& "C:\Program Files\Blender Foundation\Blender 5.1\blender.exe" -b --python generate_autoencoder_dataset.py
+& "C:\Program Files\Blender Foundation\Blender 5.1\blender.exe" -b --python src/generate_autoencoder_dataset.py
 ```
 
 ```bash
 # Ubuntu Linux
-NUM_IMAGES=5000 blender -b --python generate_autoencoder_dataset.py
+NUM_IMAGES=5000 blender -b --python src/generate_autoencoder_dataset.py
 ```
 
 #### Inject a Physical Structural Defect (Weld Slag):
 ```powershell
-& "C:\Program Files\Blender Foundation\Blender 5.1\blender.exe" -b --python data_gen_anomalous.py
+& "C:\Program Files\Blender Foundation\Blender 5.1\blender.exe" -b --python src/data_gen_anomalous.py
 ```
 
 ---
@@ -160,7 +194,7 @@ NUM_IMAGES=5000 blender -b --python generate_autoencoder_dataset.py
 
 ```bash
 # Trains on GPU, evaluates reconstruction, and outputs 3-panel error heatmap
-python train_autoencoder_pytorch.py
+python src/train_autoencoder_pytorch.py
 ```
 
 The script automatically generates [`models/reconstruction_analysis.png`](models/reconstruction_analysis.png) plotting:
