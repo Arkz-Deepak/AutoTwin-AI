@@ -58,13 +58,13 @@ if SYNTHETIC_DIR.exists():
     app.mount("/static/synthetic", StaticFiles(directory=str(SYNTHETIC_DIR)), name="synthetic")
 
 # ---------------------------------------------------------
-# Structural Joints Database (Calibrated for Centered Horizontal Chassis)
+# Structural Joints Database (Calibrated to Exact CAD Vertex Centroids)
 # ---------------------------------------------------------
 CHASSIS_JOINTS = [
     {
         "id": "rear_sus_bracket",
         "name": "Rear Suspension Spring Perch",
-        "position": [1.25, 0.38, 0.45],
+        "position": [1.36, 0.22, 0.50],
         "status": "PENDING",
         "description": "Rear suspension spring perch and frame kick-up junction",
         "local_vertices": 18395,
@@ -73,7 +73,7 @@ CHASSIS_JOINTS = [
     {
         "id": "front_sus_bracket_left",
         "name": "Front-Left Suspension Joint",
-        "position": [-1.48, 0.32, 0.38],
+        "position": [-1.23, 0.14, 0.40],
         "status": "NOMINAL",
         "description": "Front-left lower control arm mounting bracket & tubular crossmember",
         "local_vertices": 29947,
@@ -82,7 +82,7 @@ CHASSIS_JOINTS = [
     {
         "id": "front_sus_bracket_right",
         "name": "Front-Right Suspension Joint",
-        "position": [-1.48, 0.32, -0.38],
+        "position": [-1.19, 0.14, -0.42],
         "status": "NOMINAL",
         "description": "Front-right lower control arm bracket and frame rail flange",
         "local_vertices": 26822,
@@ -91,13 +91,14 @@ CHASSIS_JOINTS = [
     {
         "id": "engine_mount_crossmember",
         "name": "Engine Mount Crossmember",
-        "position": [-0.90, 0.28, -0.35],
+        "position": [-0.64, 0.10, -0.45],
         "status": "NOMINAL",
         "description": "Heavy-duty chassis mounting bracket with reinforcement gussets",
         "local_vertices": 21557,
         "tolerance_mm": 0.5
     }
 ]
+
 
 
 # ---------------------------------------------------------

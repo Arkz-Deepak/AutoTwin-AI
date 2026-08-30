@@ -178,7 +178,7 @@ export default function DigitalTwinViewer({ joints, selectedJointId, onSelectJoi
           fadeStrength={1.5}
         />
 
-        {/* 3D CAD Chassis Object */}
+        {/* 3D CAD Chassis Object & Accurately Aligned Hotspots */}
         <Suspense fallback={
           <Html center>
             <div className="flex flex-col items-center gap-2 p-4 bg-slate-900/90 border border-cyan-500/50 rounded-lg backdrop-blur-md">
@@ -187,10 +187,12 @@ export default function DigitalTwinViewer({ joints, selectedJointId, onSelectJoi
             </div>
           </Html>
         }>
-          <Center top position={[0, -0.5, 0]}>
-            <ChassisMesh url={cadUrl} />
+          <group position={[0, -0.1, 0]}>
+            <Center top>
+              <ChassisMesh url={cadUrl} />
+            </Center>
             
-            {/* Interactive Hotspot Spheres */}
+            {/* Interactive Hotspot Spheres (Direct CAD Vertex Centroids) */}
             {joints.map((joint) => (
               <JointHotspot
                 key={joint.id}
@@ -199,8 +201,9 @@ export default function DigitalTwinViewer({ joints, selectedJointId, onSelectJoi
                 onClick={onSelectJoint}
               />
             ))}
-          </Center>
+          </group>
         </Suspense>
+
 
         {/* Viewport OrbitControls */}
         <OrbitControls
