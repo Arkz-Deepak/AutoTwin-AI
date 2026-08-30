@@ -58,28 +58,47 @@ if SYNTHETIC_DIR.exists():
     app.mount("/static/synthetic", StaticFiles(directory=str(SYNTHETIC_DIR)), name="synthetic")
 
 # ---------------------------------------------------------
-# Structural Joints Database
+# Structural Joints Database (Calibrated for Centered Horizontal Chassis)
 # ---------------------------------------------------------
 CHASSIS_JOINTS = [
     {
         "id": "rear_sus_bracket",
-        "name": "Rear Suspension Bracket",
-        "position": [1.5, 0.5, 0.1],
+        "name": "Rear Suspension Spring Perch",
+        "position": [1.25, 0.38, 0.45],
         "status": "PENDING",
-        "description": "Rear suspension spring perch and frame cross-member junction",
+        "description": "Rear suspension spring perch and frame kick-up junction",
         "local_vertices": 18395,
         "tolerance_mm": 0.5
     },
     {
         "id": "front_sus_bracket_left",
-        "name": "Front-Left Suspension & Cross-Member Joint",
-        "position": [-1.48, -0.303, -0.095],
+        "name": "Front-Left Suspension Joint",
+        "position": [-1.48, 0.32, 0.38],
         "status": "NOMINAL",
-        "description": "Front-left lower control arm mounting bracket and tubular cross-tube interface",
+        "description": "Front-left lower control arm mounting bracket & tubular crossmember",
         "local_vertices": 29947,
         "tolerance_mm": 0.4
+    },
+    {
+        "id": "front_sus_bracket_right",
+        "name": "Front-Right Suspension Joint",
+        "position": [-1.48, 0.32, -0.38],
+        "status": "NOMINAL",
+        "description": "Front-right lower control arm bracket and frame rail flange",
+        "local_vertices": 26822,
+        "tolerance_mm": 0.4
+    },
+    {
+        "id": "engine_mount_crossmember",
+        "name": "Engine Mount Crossmember",
+        "position": [-0.90, 0.28, -0.35],
+        "status": "NOMINAL",
+        "description": "Heavy-duty chassis mounting bracket with reinforcement gussets",
+        "local_vertices": 21557,
+        "tolerance_mm": 0.5
     }
 ]
+
 
 # ---------------------------------------------------------
 # Real PyTorch Autoencoder Inference Engine (Optional / Fallback)

@@ -30,7 +30,7 @@ function ChassisMesh({ url }) {
     <primitive 
       object={obj} 
       position={[0, 0, 0]} 
-      rotation={[0, 0, 0]} 
+      rotation={[-Math.PI / 2, 0, 0]} 
       scale={[0.01, 0.01, 0.01]}
     />
   )
