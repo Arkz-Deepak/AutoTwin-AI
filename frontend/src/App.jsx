@@ -154,12 +154,13 @@ export default function App() {
         </div>
 
         {/* ---------------------------------------------------------
-            LEFT SIDEBAR: TELEMETRY & INSPECTION CONTROLS
+            LEFT SIDEBAR: TELEMETRY & INSPECTION CONTROLS (SCROLLABLE)
         --------------------------------------------------------- */}
-        <aside className="w-[420px] max-w-[90vw] h-full z-10 p-4 flex flex-col gap-4 pointer-events-none">
+        <aside className="w-[430px] max-w-[90vw] h-full z-10 p-4 flex flex-col gap-4 overflow-y-auto custom-scrollbar pointer-events-auto pb-16">
           
           {/* Telemetry & Joint Info Card */}
-          <div className="pointer-events-auto bg-slate-950/85 backdrop-blur-xl border border-slate-800/80 rounded-xl p-4 shadow-2xl flex flex-col gap-3">
+          <div className="bg-slate-950/90 backdrop-blur-xl border border-slate-800/80 rounded-xl p-4 shadow-2xl flex flex-col gap-3">
+
             <div className="flex items-center justify-between border-b border-slate-800/60 pb-2.5">
               <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 tracking-wider">
                 <Activity className="w-4 h-4 text-cyan-400" />
