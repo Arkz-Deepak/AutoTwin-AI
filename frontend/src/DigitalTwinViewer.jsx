@@ -31,7 +31,7 @@ function ChassisMesh({ url }) {
       object={obj} 
       position={[0, 0, 0]} 
       rotation={[0, 0, 0]} 
-      scale={[0.001, 0.001, 0.001]}
+      scale={[0.01, 0.01, 0.01]}
     />
   )
 }
@@ -136,7 +136,7 @@ export default function DigitalTwinViewer({ joints, selectedJointId, onSelectJoi
   return (
     <div className="w-full h-full relative">
       <Canvas
-        camera={{ position: [8, 5, 8], fov: 45 }}
+        camera={{ position: [5.0, 3.2, 5.0], fov: 45 }}
         gl={{ antialias: true, alpha: true }}
         shadows
       >
