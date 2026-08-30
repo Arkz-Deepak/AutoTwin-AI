@@ -197,8 +197,8 @@ export default function App() {
                         <span className={`w-2 h-2 rounded-full ${isDefective ? 'bg-red-400 animate-pulse' : 'bg-cyan-400'}`} />
                         {joint.name}
                       </span>
-                      <span className="text-[11px] font-mono text-slate-400">
-                        Pos: [{joint.position.map(v => v.toFixed(2)).join(', ')}]
+                      <span className="text-[10px] font-mono text-slate-400">
+                        X: {joint.position[0] > 0 ? `+${joint.position[0].toFixed(2)}` : joint.position[0].toFixed(2)}m · Y: +{joint.position[1].toFixed(2)}m · Z: {joint.position[2] > 0 ? `+${joint.position[2].toFixed(2)}` : joint.position[2].toFixed(2)}m
                       </span>
                     </div>
 

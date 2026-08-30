@@ -1,8 +1,9 @@
 import React, { Suspense, useState, useRef } from 'react'
 import { Canvas, useFrame, useLoader } from '@react-three/fiber'
-import { OrbitControls, Html, Center, Grid, Float } from '@react-three/drei'
+import { OrbitControls, Html, Center, Grid, GizmoHelper, GizmoViewport } from '@react-three/drei'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import * as THREE from 'three'
+import { Compass, Eye, Maximize2 } from 'lucide-react'
 
 // ---------------------------------------------------------
 // 3D Chassis Model Loader
@@ -101,24 +102,26 @@ function JointHotspot({ joint, isSelected, onClick }) {
         />
       </mesh>
 
-      {/* 3D Floating Cyberpunk Tag / Tooltip */}
+      {/* 3D Floating Tag / Tooltip */}
       <Html
-        position={[0, 0.12, 0]}
+        position={[0, 0.14, 0]}
         center
         distanceFactor={6}
         className="pointer-events-none transition-opacity duration-300"
       >
-        <div className={`px-2.5 py-1 rounded border text-xs font-mono whitespace-nowrap backdrop-blur-md transition-all ${
+        <div className={`px-2.5 py-1.5 rounded-lg border text-xs font-mono whitespace-nowrap backdrop-blur-md transition-all shadow-xl ${
           isDefective 
-            ? 'bg-red-950/80 border-red-500 text-red-200 neon-glow-red' 
-            : 'bg-slate-900/80 border-cyan-500/60 text-cyan-300 neon-glow-cyan'
+            ? 'bg-red-950/90 border-red-500 text-red-200 shadow-red-500/30' 
+            : 'bg-slate-900/90 border-cyan-500/60 text-cyan-300 shadow-cyan-500/20'
         }`}>
-          <div className="flex items-center gap-1.5 font-semibold">
+          <div className="flex items-center gap-1.5 font-bold">
             <span className={`w-2 h-2 rounded-full ${isDefective ? 'bg-red-500 animate-ping' : 'bg-cyan-400'}`} />
             {joint.name}
           </div>
-          <div className="text-[10px] text-slate-400 mt-0.5">
-            Coord: [{joint.position.map(v => v.toFixed(2)).join(', ')}]
+          <div className="text-[10px] text-slate-300 font-mono mt-0.5 flex gap-2">
+            <span>X: {joint.position[0].toFixed(2)}m</span>
+            <span>Y: {joint.position[1].toFixed(2)}m</span>
+            <span>Z: {joint.position[2].toFixed(2)}m</span>
           </div>
         </div>
       </Html>
@@ -132,6 +135,15 @@ function JointHotspot({ joint, isSelected, onClick }) {
 export default function DigitalTwinViewer({ joints, selectedJointId, onSelectJoint }) {
   const controlsRef = useRef()
   const cadUrl = "http://localhost:8000/static/cad/28000.obj"
+
+  // Preset camera angle snapping
+  const setCameraView = (x, y, z) => {
+    if (controlsRef.current) {
+      controlsRef.current.object.position.set(x, y, z)
+      controlsRef.current.target.set(0, 0, 0)
+      controlsRef.current.update()
+    }
+  }
 
   return (
     <div className="w-full h-full relative">
@@ -200,12 +212,52 @@ export default function DigitalTwinViewer({ joints, selectedJointId, onSelectJoi
           maxDistance={15.0}
           maxPolarAngle={Math.PI / 2 + 0.1}
         />
+
+        {/* 3D CAD Orientation Gizmo (X: Red, Y: Green, Z: Blue) */}
+        <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
+          <GizmoViewport 
+            axisColors={['#ef4444', '#10b981', '#3b82f6']} 
+            labelColor="#ffffff" 
+          />
+        </GizmoHelper>
       </Canvas>
 
-      {/* Viewport Overlay Controls */}
-      <div className="absolute bottom-4 right-4 flex items-center gap-2 bg-slate-900/80 border border-slate-800 p-1.5 rounded-lg backdrop-blur-md text-xs text-slate-400 font-mono">
+      {/* Quick Camera Viewport Toolbar */}
+      <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-slate-950/85 border border-slate-800/90 p-1.5 rounded-xl backdrop-blur-xl z-10 shadow-2xl text-xs font-mono">
+        <span className="text-[10px] text-slate-400 px-1.5 flex items-center gap-1 font-semibold">
+          <Compass className="w-3.5 h-3.5 text-cyan-400" />
+          VIEW:
+        </span>
+        <button
+          onClick={() => setCameraView(5.0, 3.2, 5.0)}
+          className="px-2 py-1 rounded bg-slate-900 border border-slate-800 hover:border-cyan-500/60 text-slate-300 hover:text-cyan-300 transition-all"
+        >
+          ISO
+        </button>
+        <button
+          onClick={() => setCameraView(0.0, 8.0, 0.001)}
+          className="px-2 py-1 rounded bg-slate-900 border border-slate-800 hover:border-cyan-500/60 text-slate-300 hover:text-cyan-300 transition-all"
+        >
+          TOP
+        </button>
+        <button
+          onClick={() => setCameraView(0.0, 1.0, 6.0)}
+          className="px-2 py-1 rounded bg-slate-900 border border-slate-800 hover:border-cyan-500/60 text-slate-300 hover:text-cyan-300 transition-all"
+        >
+          SIDE
+        </button>
+        <button
+          onClick={() => setCameraView(-6.0, 1.0, 0.0)}
+          className="px-2 py-1 rounded bg-slate-900 border border-slate-800 hover:border-cyan-500/60 text-slate-300 hover:text-cyan-300 transition-all"
+        >
+          FRONT
+        </button>
+      </div>
+
+      {/* Viewport Status Badge */}
+      <div className="absolute bottom-4 right-4 flex items-center gap-2 bg-slate-950/80 border border-slate-800 px-3 py-1.5 rounded-lg backdrop-blur-md text-[11px] text-slate-400 font-mono">
         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-        <span>THREE.JS WEBGL RENDERER ACTIVE</span>
+        <span>THREE.JS 3D CANVAS // GIZMO ORIENTATION ACTIVE</span>
       </div>
     </div>
   )
