@@ -30,11 +30,14 @@ cad_model/
 *.blend2
 *.blend@
 
-# Python Virtual Environments
+# Python Virtual Environments & Node Dependencies
 .venv/
 venv/
 ENV/
 env/
+node_modules/
+dist/
+.vite/
 
 # IDE & OS specific files
 .vscode/
