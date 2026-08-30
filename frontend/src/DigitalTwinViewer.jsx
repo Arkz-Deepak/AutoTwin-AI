@@ -8,7 +8,7 @@ import { Compass, Eye, Maximize2 } from 'lucide-react'
 // ---------------------------------------------------------
 // 3D Chassis Model Loader
 // ---------------------------------------------------------
-function ChassisMesh({ url }) {
+function ChassisMesh({ url, onMeshClick }) {
   const obj = useLoader(OBJLoader, url)
 
   // Apply industrial metallic PBR material across all meshes
@@ -33,9 +33,19 @@ function ChassisMesh({ url }) {
       position={[0, 0, 0]} 
       rotation={[-Math.PI / 2, 0, 0]} 
       scale={[0.01, 0.01, 0.01]}
+      onPointerDown={(e) => {
+        e.stopPropagation()
+        const x = parseFloat(e.point.x.toFixed(3))
+        const y = parseFloat(e.point.y.toFixed(3))
+        const z = parseFloat(e.point.z.toFixed(3))
+        console.log(`%c[CAD Coordinate Tool] New Joint Coord: [${x}, ${y}, ${z}]`, 'color: #00f0ff; font-weight: bold; font-size: 13px; background: #0a0d14; padding: 4px;')
+        if (onMeshClick) onMeshClick([x, y, z])
+      }}
     />
   )
 }
+
+
 
 // ---------------------------------------------------------
 // Interactive Glowing Joint Hotspot Marker
@@ -134,6 +144,7 @@ function JointHotspot({ joint, isSelected, onClick }) {
 // ---------------------------------------------------------
 export default function DigitalTwinViewer({ joints, selectedJointId, onSelectJoint }) {
   const controlsRef = useRef()
+  const [lastClicked, setLastClicked] = useState(null)
   const cadUrl = "http://localhost:8000/static/cad/28000.obj"
 
   // Preset camera angle snapping
@@ -189,7 +200,7 @@ export default function DigitalTwinViewer({ joints, selectedJointId, onSelectJoi
         }>
           <group position={[0, -0.1, 0]}>
             <Center top>
-              <ChassisMesh url={cadUrl} />
+              <ChassisMesh url={cadUrl} onMeshClick={setLastClicked} />
             </Center>
             
             {/* Interactive Hotspot Spheres (Direct CAD Vertex Centroids) */}
@@ -203,6 +214,7 @@ export default function DigitalTwinViewer({ joints, selectedJointId, onSelectJoi
             ))}
           </group>
         </Suspense>
+
 
 
         {/* Viewport OrbitControls */}
@@ -256,6 +268,15 @@ export default function DigitalTwinViewer({ joints, selectedJointId, onSelectJoi
           FRONT
         </button>
       </div>
+
+      {/* Live Click-to-Find CAD Coordinate Toast Badge */}
+      {lastClicked && (
+        <div className="absolute top-16 right-4 flex items-center gap-2.5 bg-cyan-950/95 border border-cyan-400 text-cyan-200 px-3.5 py-2 rounded-xl backdrop-blur-xl shadow-2xl z-20 text-xs font-mono animate-in fade-in slide-in-from-top-2">
+          <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping" />
+          <span>📍 CLICKED CAD COORD: [{lastClicked.map(v => v.toFixed(3)).join(', ')}]</span>
+        </div>
+      )}
+
 
       {/* Viewport Status Badge */}
       <div className="absolute bottom-4 right-4 flex items-center gap-2 bg-slate-950/80 border border-slate-800 px-3 py-1.5 rounded-lg backdrop-blur-md text-[11px] text-slate-400 font-mono">
