@@ -136,7 +136,7 @@ export default function DigitalTwinViewer({ joints, selectedJointId, onSelectJoi
   return (
     <div className="w-full h-full relative">
       <Canvas
-        camera={{ position: [3.5, 2.5, 3.5], fov: 45 }}
+        camera={{ position: [8, 5, 8], fov: 45 }}
         gl={{ antialias: true, alpha: true }}
         shadows
       >
