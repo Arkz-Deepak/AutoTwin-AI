@@ -235,7 +235,7 @@ export default function App() {
 
           <div className="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded bg-cyan-950/40 border border-cyan-500/30 text-cyan-300">
             <TrendingUp className="w-3.5 h-3.5 text-cyan-400" />
-            <span>T=8 CONVLSTM</span>
+            <span>VIDEO POC (v2.0)</span>
           </div>
         </div>
       </header>
@@ -246,7 +246,7 @@ export default function App() {
       <div className="flex-1 relative flex overflow-hidden">
 
         {/* =========================================================
-            MODE 1: ROBOTIC CONVLSTM VIDEO TELEMETRY
+            MODE 1: ROBOTIC VIDEO TELEMETRY POC
         ========================================================= */}
         {currentMode === 'robotic' && (
           <div className="w-full h-full p-6 flex flex-col gap-5 overflow-y-auto custom-scrollbar">
@@ -281,28 +281,11 @@ export default function App() {
                 </div>
               </div>
 
-              {/* View Switcher: ConvLSTM Anomaly Report vs Telemetry */}
-              <div className="flex items-center gap-1 bg-slate-900 p-1 rounded-lg border border-slate-800">
-                <button
-                  onClick={() => setActiveRoboticView('convlstm')}
-                  className={`px-3 py-1 rounded text-xs font-mono font-bold transition-all ${
-                    activeRoboticView === 'convlstm'
-                      ? 'bg-cyan-500 text-slate-950'
-                      : 'text-slate-400 hover:text-slate-200'
-                  }`}
-                >
-                  ConvLSTM Next-Frame MSE
-                </button>
-                <button
-                  onClick={() => setActiveRoboticView('telemetry')}
-                  className={`px-3 py-1 rounded text-xs font-mono font-bold transition-all ${
-                    activeRoboticView === 'telemetry'
-                      ? 'bg-cyan-500 text-slate-950'
-                      : 'text-slate-400 hover:text-slate-200'
-                  }`}
-                >
-                  Spatter & Arc Telemetry
-                </button>
+              {/* Status Badge */}
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-mono bg-cyan-950/60 text-cyan-300 border border-cyan-500/40 px-2.5 py-1 rounded font-bold">
+                  ROBOT BENCHMARK VALIDATION (POC)
+                </span>
               </div>
             </div>
 
@@ -315,7 +298,7 @@ export default function App() {
                   <Activity className="w-3.5 h-3.5 text-cyan-400" />
                 </span>
                 <div className="text-2xl font-bold font-mono text-slate-100">
-                  {roboTelemetry.arc_telemetry?.total_arc_on_formatted || "3m 48s"}
+                  {roboTelemetry.arc_telemetry?.total_arc_on_formatted || (selectedRoboticVideo === 'video_20260908_170143' ? "3m 48s" : "4m 27s")}
                 </div>
                 <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
                   <span>Duty Cycle:</span>
@@ -357,22 +340,33 @@ export default function App() {
                 </div>
               </div>
 
-              {/* ConvLSTM Next-Frame MSE */}
+              {/* Target Component */}
               <div className="bg-slate-950/80 border border-slate-800/90 rounded-xl p-4 flex flex-col gap-2">
                 <span className="text-[10px] font-mono text-purple-400 font-bold uppercase flex items-center justify-between">
-                  <span>CONVLSTM MSE ANOMALY</span>
+                  <span>CONTROLLER LOG SYNC</span>
                   <ShieldAlert className="w-3.5 h-3.5 text-purple-400" />
                 </span>
-                <div className="text-2xl font-bold font-mono text-purple-300">
-                  {roboConv.anomalous_chunks_count || (selectedRoboticVideo === 'video_20260908_170143' ? 13 : 26)} <span className="text-xs text-slate-400">events &gt; 2.5σ</span>
+                <div className="text-xl font-bold font-mono text-purple-300">
+                  {selectedRoboticVideo === 'video_20260908_170143' ? "GIRDER 516 // INNER" : "GIRDER 516 // FLANGE"}
                 </div>
                 <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
-                  <span>Peak Anomaly:</span>
-                  <span className="text-red-400 font-bold">
-                    t = {roboConv.peak_anomaly?.timestamp_sec || (selectedRoboticVideo === 'video_20260908_170143' ? "28.1s" : "123.3s")}
-                  </span>
+                  <span>Verification:</span>
+                  <span className="text-emerald-400 font-bold">READY FOR LOG AUDIT</span>
                 </div>
               </div>
+            </div>
+
+            {/* v3.0 Roadmap Notice */}
+            <div className="bg-gradient-to-r from-purple-950/40 via-cyan-950/40 to-slate-950/40 border border-purple-500/30 rounded-xl p-3.5 flex items-center justify-between text-xs font-mono">
+              <div className="flex items-center gap-2.5">
+                <Sparkles className="w-4 h-4 text-cyan-400" />
+                <span className="text-slate-300">
+                  <strong className="text-cyan-300">Phase 2 Roadmap (v3.0):</strong> Spatiotemporal ConvLSTM 5D Tensor Model is scheduled for next-frame prediction and spatiotemporal anomaly localization.
+                </span>
+              </div>
+              <span className="text-[10px] text-purple-300 bg-purple-900/40 border border-purple-500/40 px-2 py-0.5 rounded font-bold">
+                BRANCH: feature/v3-convlstm
+              </span>
             </div>
 
             {/* Embedded Multi-Panel Report Plot */}
@@ -381,29 +375,19 @@ export default function App() {
                 <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 font-bold">
                   <BarChart3 className="w-4 h-4" />
                   <span>
-                    {activeRoboticView === 'convlstm' 
-                      ? `SPATIOTEMPORAL CONVLSTM NEXT-FRAME PREDICTION & ANOMALY REPORT (${selectedRoboticVideo})` 
-                      : `ARC-ON & OPENCV SPATTER TELEMETRY TIMELINE (${selectedRoboticVideo})`}
+                    ARC-ON PULSE, SPATTER TRACKING & TEMPORAL STABILITY TIMELINE ({selectedRoboticVideo})
                   </span>
                 </div>
                 <span className="text-[10px] font-mono bg-cyan-950/60 text-cyan-300 border border-cyan-500/40 px-2.5 py-0.5 rounded">
-                  MODEL: ConvLSTM2d Autoencoder (T=8)
+                  OPENCV TELEMETRY ENGINE
                 </span>
               </div>
 
               <div className="flex-1 min-h-[420px] relative rounded-lg overflow-hidden bg-slate-900/50 flex items-center justify-center border border-slate-800">
                 <img
-                  src={
-                    activeRoboticView === 'convlstm'
-                      ? `${API_BASE}/static/data/convlstm_anomaly_report_${selectedRoboticVideo}.png`
-                      : `${API_BASE}/static/data/telemetry_analysis_${selectedRoboticVideo}.png`
-                  }
+                  src={`${API_BASE}/static/data/telemetry_analysis_${selectedRoboticVideo}.png`}
                   alt="Robotic Telemetry Plot"
                   className="w-full h-full object-contain"
-                  onError={(e) => {
-                    // Fallback to local image path if API static serving is loading
-                    e.target.src = `http://localhost:8000/static/data/convlstm_anomaly_report_${selectedRoboticVideo}.png`
-                  }}
                 />
               </div>
             </div>

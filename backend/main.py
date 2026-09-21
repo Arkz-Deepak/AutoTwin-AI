@@ -285,7 +285,7 @@ def get_fabrication_stages():
 def get_robotic_telemetry():
     """
     Returns telemetry metrics for robotic welding videos:
-    arc-on duty cycle, spatter tracking, stability indices, and ConvLSTM MSE anomaly reports.
+    arc-on duty cycle, spatter tracking, stability indices, and telemetry plot URLs.
     """
     import json
     results = {}

@@ -1,18 +1,59 @@
-# 🚗 AutoTwin-AI: Automotive Chassis Digital Twin & Structural Anomaly Detection
+# 🏭 AutoTwin-AI: Industrial Digital Twin, Video Telemetry & Structural Inspection Platform
 
+[![CI/CD Pipeline](https://github.com/Arkz-Deepak/AutoTwin-AI/actions/workflows/ci.yml/badge.svg)](https://github.com/Arkz-Deepak/AutoTwin-AI/actions)
+[![Release: v2.0](https://img.shields.io/badge/Release-v2.0%20(Video%20POC)-cyan.svg)](https://github.com/Arkz-Deepak/AutoTwin-AI/releases/tag/v2.0)
+[![Release: v1.0](https://img.shields.io/badge/Release-v1.0%20(3D%20Chassis)-blue.svg)](https://github.com/Arkz-Deepak/AutoTwin-AI/releases/tag/v1.0)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![PyTorch 2.x](https://img.shields.io/badge/PyTorch-2.x%20CUDA-orange.svg)](https://pytorch.org/)
-[![Blender 5.x](https://img.shields.io/badge/Blender-5.x%20OptiX-orange.svg)](https://www.blender.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-green.svg)](https://fastapi.tiangolo.com/)
 [![React Three Fiber](https://img.shields.io/badge/React_Three_Fiber-8.x-cyan.svg)](https://docs.pmnd.rs/react-three-fiber)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.x-38bdf8.svg)](https://tailwindcss.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-An end-to-end **AI-Powered Digital Twin & Visual Inspection Platform** for vehicle structural ladder-frame chassis assemblies. The system combines high-throughput GPU synthetic data generation in Blender Cycles, physics-informed domain randomization, deep convolutional autoencoders for microscopic defect detection, and an interactive **React + Three.js 3D WebGL Digital Twin Dashboard**.
+An end-to-end **Industrial Digital Twin, Video Telemetry & Structural Inspection Platform** for vehicle ladder-frame chassis assemblies and heavy crane fabrication (Girder 516).
+
+- **v2.0 (Current)**: Factory Video Telemetry POC — Automated Arc-On Time, Spatter Particle Tracking, Process Stability Indices, Manual Fabrication Telemetry, and Crane Gallery 28-Stage Takt Benchmarks.
+- **v1.0**: Full-Stack 3D Ladder-Frame Chassis Digital Twin, 361k CAD vertex clustering, and Convolutional Autoencoder for microscopic defect detection.
+- **v3.0 (Roadmap)**: Spatiotemporal ConvLSTM 5D Tensor Model for Next-Frame Prediction (branch [`feature/v3-convlstm`](https://github.com/Arkz-Deepak/AutoTwin-AI/tree/feature/v3-convlstm)).
 
 ---
 
-## 📸 Visual Showcase & Inspection Suite
+## 🎬 v2.0: Factory Video Telemetry & Inspection POC
+
+AutoTwin-AI v2.0 integrates real-world factory video telemetry to benchmark robotic welding against internal controller logs, monitor human manual fabrication, and enforce takt compliance across the **Crane Gallery Assembly**.
+
+### 1. Robotic Welding Benchmarks (Girder 516 Seams)
+The robotic welding videos serve as a controlled benchmark. Vision-derived metrics are compared against the robot's internal controller logs to validate measurement accuracy:
+
+| Metric | Girder 516 // Inner Corner Seam (`170143`) | Girder 516 // Lower Flange Seam (`171604`) |
+|:---|:---:|:---:|
+| **Video Duration** | 228.52s (3m 48s) | 268.03s (4m 28s) |
+| **Total Frames** | 6,860 @ 30.02 FPS | 8,046 @ 30.02 FPS |
+| **Arc-On Duration** | **228.46s (100.0% Duty Cycle)** | **267.97s (100.0% Duty Cycle)** |
+| **Spatter Tracking** | 36.87 sparks/frame (~1,106.9 sparks/s) | 86.95 sparks/frame (~2,610.2 sparks/s) |
+| **Peak Spatter Burst** | **93 sparks** (@ $t = 29.91$s) | **297 sparks** (@ $t = 257.71$s) |
+| **Process Stability Index** | **95.04%** (34 frames $> 3\sigma$) | **93.29%** (54 frames $> 3\sigma$) |
+| **Controller Log Audit** | **READY FOR LOG VERIFICATION** | **READY FOR LOG VERIFICATION** |
+
+![Girder 516 Inner Seam Telemetry](data/telemetry_analysis_video_20260908_170143.png)
+
+---
+
+### 2. Manual Fabrication & Grinding Telemetry (`IMG_3601.MOV`)
+The ultimate deployment target is human fabrication workstations. Telemetry tracks manual tool engagement and correlates against standard fabrication cycle times:
+- **Duration**: 326.01s (5m 26s) | 9,775 frames.
+- **Active Grinding Contact Time**: **326.08s (100.0% Active Tool Engagement)**.
+- **Peak Spark Stream**: **449 sparks/frame**, mean motion energy **7.53**.
+- **Crane Gallery Benchmark Correlation** (`crane_gallery_stages.xlsx`):
+  - Stage #5 (*I Beam UT & Cleaning*): 200 min cycle vs 227 min takt (**PASS**).
+  - Stage #9 (*UT inspection & Cleaning*): 120 min cycle vs 227 min takt (**PASS**).
+  - Stage #19 (*Assy cleaning & FW*): 160 min cycle vs 227 min takt (**PASS**).
+
+![Manual Fabrication Telemetry](data/manual_telemetry_analysis_IMG_3601.png)
+
+---
+
+## 📸 v1.0: 3D Chassis Digital Twin & Spatial Inspection
 
 ### 1. AI Structural Joint Anomaly Detection & Reconstruction Heatmap
 The trained **PyTorch Convolutional Autoencoder** reconstructs baseline nominal joints and flags physical anomalies via high-intensity residual error heatmaps ($|I - \hat{I}|$):
