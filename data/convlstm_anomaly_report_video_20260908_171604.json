@@ -1,0 +1,15 @@
+{
+  "video_name": "video_20260908_171604.mp4",
+  "model_architecture": "SpatiotemporalConvLSTMAutoencoder",
+  "sequence_length_T": 8,
+  "total_evaluated_chunks": 2010,
+  "mean_spatiotemporal_mse": 0.011783,
+  "std_spatiotemporal_mse": 0.001669,
+  "anomaly_threshold_2_5sigma": 0.015956,
+  "anomalous_chunks_count": 26,
+  "peak_anomaly": {
+    "mse_score": 0.022939,
+    "timestamp_sec": 123.26,
+    "frame_index": 3700
+  }
+}

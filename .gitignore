@@ -19,10 +19,22 @@ cad_model/
 *.webp
 *.exr
 
-# Whitelist documentation showcase assets
+# Whitelist documentation showcase assets & factory analysis plots
 !docs/assets/*.png
 !docs/assets/*.jpg
 !docs/assets/*.jpeg
+!data/*.png
+!data/*.json
+!data/*.xlsx
+
+# Video Media Files (>100MB exceeding GitHub limits)
+*.mp4
+*.mov
+*.MOV
+*.avi
+*.mkv
+data/samples_*/
+data/samples_mov/
 
 # Blender Autosave & Backups
 *.blend

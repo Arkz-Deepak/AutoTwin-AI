@@ -1,0 +1,56 @@
+{
+  "video_name": "IMG_3601.MOV",
+  "video_duration_sec": 326.01,
+  "video_duration_formatted": "5m 26s",
+  "total_frames": 9775,
+  "fps": 29.98,
+  "operator_telemetry": {
+    "total_active_grinding_sec": 326.08,
+    "total_active_grinding_formatted": "5m 26s",
+    "total_idle_setup_sec": 0.0,
+    "total_idle_setup_formatted": "0m 0s",
+    "grinding_duty_cycle_pct": 100.02,
+    "active_grinding_sessions_count": 1,
+    "peak_spark_count": 449,
+    "mean_motion_energy": 7.53,
+    "grinding_sessions": [
+      {
+        "session_id": 1,
+        "start_time_sec": 0.0,
+        "end_time_sec": 325.98,
+        "duration_sec": 325.98,
+        "start_frame": 0,
+        "end_frame": 9774
+      }
+    ]
+  },
+  "crane_gallery_benchmark_correlation": [
+    {
+      "seq": 5,
+      "stage_name": "I Beam UT & Cleaning (Grinder)",
+      "total_cycle_min": 200,
+      "takt_min": 227,
+      "estimated_net_grinding_min": 200.0,
+      "estimated_setup_inspection_min": -0.0,
+      "takt_compliance": "PASS (WITHIN TAKT)"
+    },
+    {
+      "seq": 9,
+      "stage_name": "UT inspection & Cleaning (Grinder)",
+      "total_cycle_min": 120,
+      "takt_min": 227,
+      "estimated_net_grinding_min": 120.0,
+      "estimated_setup_inspection_min": -0.0,
+      "takt_compliance": "PASS (WITHIN TAKT)"
+    },
+    {
+      "seq": 19,
+      "stage_name": "Assy cleaning & FW (Grinder)",
+      "total_cycle_min": 160,
+      "takt_min": 227,
+      "estimated_net_grinding_min": 160.0,
+      "estimated_setup_inspection_min": -0.0,
+      "takt_compliance": "PASS (WITHIN TAKT)"
+    }
+  ]
+}

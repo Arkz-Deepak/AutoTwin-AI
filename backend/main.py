@@ -57,6 +57,11 @@ if MODELS_DIR.exists():
 if SYNTHETIC_DIR.exists():
     app.mount("/static/synthetic", StaticFiles(directory=str(SYNTHETIC_DIR)), name="synthetic")
 
+# Mount factory data directory (telemetry reports, plots, video samples)
+DATA_DIR = ROOT_DIR / "data"
+if DATA_DIR.exists():
+    app.mount("/static/data", StaticFiles(directory=str(DATA_DIR)), name="data")
+
 # ---------------------------------------------------------
 # Structural Joints Database (Calibrated to Exact CAD Vertex Centroids)
 # ---------------------------------------------------------
@@ -240,6 +245,89 @@ async def inspect_joint(file: Optional[UploadFile] = File(None)):
     }
 
     return JSONResponse(content=response_data)
+
+
+# ---------------------------------------------------------
+# AutoTwin-AI v2.0: Spatiotemporal Video & Factory Telemetry APIs
+# ---------------------------------------------------------
+@app.get("/api/v2/stages")
+def get_fabrication_stages():
+    """
+    Returns the complete 28-stage fabrication breakdown, cycle times,
+    takt times, and variance metrics from crane_gallery_stages.xlsx.
+    """
+    excel_path = DATA_DIR / "crane_gallery_stages.xlsx"
+    if not excel_path.exists():
+        raise HTTPException(status_code=404, detail="Fabrication stages database not found")
+
+    try:
+        import pandas as pd
+        df = pd.read_excel(excel_path)
+        stages = []
+        for _, row in df.iterrows():
+            stages.append({
+                "seq": int(row["Seq"]),
+                "section": str(row["Section"]),
+                "stage": str(row["Stage / Activity"]),
+                "cycle_time_min": int(row["Total Time (Cycle Time, min)"]),
+                "man_power": int(row["Man Power"]) if "Man Power" in row and not pd.isna(row["Man Power"]) else 1,
+                "man_hours": float(row["Man Hours"]) if "Man Hours" in row and not pd.isna(row["Man Hours"]) else 0.0,
+                "takt_time_min": int(row["Takt Time (min)"]),
+                "variance_min": int(row["Variance vs Takt"]),
+                "tracking_status": str(row["Tracking Status"])
+            })
+        return {"total_stages": len(stages), "stages": stages}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error parsing stages: {str(e)}")
+
+
+@app.get("/api/v2/telemetry/robotic")
+def get_robotic_telemetry():
+    """
+    Returns telemetry metrics for robotic welding videos:
+    arc-on duty cycle, spatter tracking, stability indices, and ConvLSTM MSE anomaly reports.
+    """
+    import json
+    results = {}
+    video_keys = ["video_20260908_170143", "video_20260908_171604"]
+
+    for key in video_keys:
+        t_json = DATA_DIR / f"telemetry_report_{key}.json"
+        c_json = DATA_DIR / f"convlstm_anomaly_report_{key}.json"
+
+        item = {}
+        if t_json.exists():
+            with open(t_json, "r", encoding="utf-8") as fp:
+                item["telemetry"] = json.load(fp)
+            item["telemetry_plot_url"] = f"http://localhost:8000/static/data/telemetry_analysis_{key}.png"
+
+        if c_json.exists():
+            with open(c_json, "r", encoding="utf-8") as fp:
+                item["convlstm"] = json.load(fp)
+            item["convlstm_plot_url"] = f"http://localhost:8000/static/data/convlstm_anomaly_report_{key}.png"
+
+        results[key] = item
+
+    return results
+
+
+@app.get("/api/v2/telemetry/manual")
+def get_manual_telemetry():
+    """
+    Returns telemetry for manual human fabrication stations (IMG_3601.MOV):
+    active grinding contact, idle/setup duration, spark intensity, and takt benchmark correlation.
+    """
+    import json
+    manual_json = DATA_DIR / "manual_telemetry_report_IMG_3601.json"
+    if not manual_json.exists():
+        return {"status": "PENDING_ANALYSIS", "message": "Manual telemetry analysis running or not yet generated"}
+
+    with open(manual_json, "r", encoding="utf-8") as fp:
+        data = json.load(fp)
+
+    data["plot_url"] = "http://localhost:8000/static/data/manual_telemetry_analysis_IMG_3601.png"
+    return data
+
 
 if __name__ == "__main__":
     import uvicorn
